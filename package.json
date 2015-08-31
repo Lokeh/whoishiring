@@ -1,0 +1,28 @@
+{
+  "name": "whoshiring",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Will Acton",
+  "license": "MIT",
+  "devDependencies": {
+    "babelify": "^6.3.0",
+    "eslint": "^1.3.1",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^4.0.0"
+  },
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "dependencies": {
+    "firebase": "^2.2.9",
+    "material-ui": "^0.11.0",
+    "react": "^0.13.3",
+    "react-tap-event-plugin": "^0.1.7"
+  }
+}

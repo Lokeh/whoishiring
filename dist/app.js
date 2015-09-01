@@ -1759,7 +1759,22 @@ var baseSetData = !metaMap ? identity : function(func, data) {
 
 module.exports = baseSetData;
 
-},{"../utility/identity":"/Users/will/Code/hnjobs/node_modules/lodash/utility/identity.js","./metaMap":"/Users/will/Code/hnjobs/node_modules/lodash/internal/metaMap.js"}],"/Users/will/Code/hnjobs/node_modules/lodash/internal/composeArgs.js":[function(require,module,exports){
+},{"../utility/identity":"/Users/will/Code/hnjobs/node_modules/lodash/utility/identity.js","./metaMap":"/Users/will/Code/hnjobs/node_modules/lodash/internal/metaMap.js"}],"/Users/will/Code/hnjobs/node_modules/lodash/internal/baseToString.js":[function(require,module,exports){
+/**
+ * Converts `value` to a string if it's not one. An empty string is returned
+ * for `null` or `undefined` values.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ */
+function baseToString(value) {
+  return value == null ? '' : (value + '');
+}
+
+module.exports = baseToString;
+
+},{}],"/Users/will/Code/hnjobs/node_modules/lodash/internal/composeArgs.js":[function(require,module,exports){
 /* Native method references for those with the same name as other `lodash` methods. */
 var nativeMax = Math.max;
 
@@ -2776,7 +2791,31 @@ var setData = (function() {
 
 module.exports = setData;
 
-},{"../date/now":"/Users/will/Code/hnjobs/node_modules/lodash/date/now.js","./baseSetData":"/Users/will/Code/hnjobs/node_modules/lodash/internal/baseSetData.js"}],"/Users/will/Code/hnjobs/node_modules/lodash/internal/wrapperClone.js":[function(require,module,exports){
+},{"../date/now":"/Users/will/Code/hnjobs/node_modules/lodash/date/now.js","./baseSetData":"/Users/will/Code/hnjobs/node_modules/lodash/internal/baseSetData.js"}],"/Users/will/Code/hnjobs/node_modules/lodash/internal/unescapeHtmlChar.js":[function(require,module,exports){
+/** Used to map HTML entities to characters. */
+var htmlUnescapes = {
+  '&amp;': '&',
+  '&lt;': '<',
+  '&gt;': '>',
+  '&quot;': '"',
+  '&#39;': "'",
+  '&#96;': '`'
+};
+
+/**
+ * Used by `_.unescape` to convert HTML entities to characters.
+ *
+ * @private
+ * @param {string} chr The matched character to unescape.
+ * @returns {string} Returns the unescaped character.
+ */
+function unescapeHtmlChar(chr) {
+  return htmlUnescapes[chr];
+}
+
+module.exports = unescapeHtmlChar;
+
+},{}],"/Users/will/Code/hnjobs/node_modules/lodash/internal/wrapperClone.js":[function(require,module,exports){
 var LazyWrapper = require('./LazyWrapper'),
     LodashWrapper = require('./LodashWrapper'),
     arrayCopy = require('./arrayCopy');
@@ -3085,7 +3124,42 @@ function keysIn(object) {
 
 module.exports = keysIn;
 
-},{"../internal/isIndex":"/Users/will/Code/hnjobs/node_modules/lodash/internal/isIndex.js","../internal/isLength":"/Users/will/Code/hnjobs/node_modules/lodash/internal/isLength.js","../lang/isArguments":"/Users/will/Code/hnjobs/node_modules/lodash/lang/isArguments.js","../lang/isArray":"/Users/will/Code/hnjobs/node_modules/lodash/lang/isArray.js","../lang/isObject":"/Users/will/Code/hnjobs/node_modules/lodash/lang/isObject.js"}],"/Users/will/Code/hnjobs/node_modules/lodash/utility/identity.js":[function(require,module,exports){
+},{"../internal/isIndex":"/Users/will/Code/hnjobs/node_modules/lodash/internal/isIndex.js","../internal/isLength":"/Users/will/Code/hnjobs/node_modules/lodash/internal/isLength.js","../lang/isArguments":"/Users/will/Code/hnjobs/node_modules/lodash/lang/isArguments.js","../lang/isArray":"/Users/will/Code/hnjobs/node_modules/lodash/lang/isArray.js","../lang/isObject":"/Users/will/Code/hnjobs/node_modules/lodash/lang/isObject.js"}],"/Users/will/Code/hnjobs/node_modules/lodash/string/unescape.js":[function(require,module,exports){
+var baseToString = require('../internal/baseToString'),
+    unescapeHtmlChar = require('../internal/unescapeHtmlChar');
+
+/** Used to match HTML entities and HTML characters. */
+var reEscapedHtml = /&(?:amp|lt|gt|quot|#39|#96);/g,
+    reHasEscapedHtml = RegExp(reEscapedHtml.source);
+
+/**
+ * The inverse of `_.escape`; this method converts the HTML entities
+ * `&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`, and `&#96;` in `string` to their
+ * corresponding characters.
+ *
+ * **Note:** No other HTML entities are unescaped. To unescape additional HTML
+ * entities use a third-party library like [_he_](https://mths.be/he).
+ *
+ * @static
+ * @memberOf _
+ * @category String
+ * @param {string} [string=''] The string to unescape.
+ * @returns {string} Returns the unescaped string.
+ * @example
+ *
+ * _.unescape('fred, barney, &amp; pebbles');
+ * // => 'fred, barney, & pebbles'
+ */
+function unescape(string) {
+  string = baseToString(string);
+  return (string && reHasEscapedHtml.test(string))
+    ? string.replace(reEscapedHtml, unescapeHtmlChar)
+    : string;
+}
+
+module.exports = unescape;
+
+},{"../internal/baseToString":"/Users/will/Code/hnjobs/node_modules/lodash/internal/baseToString.js","../internal/unescapeHtmlChar":"/Users/will/Code/hnjobs/node_modules/lodash/internal/unescapeHtmlChar.js"}],"/Users/will/Code/hnjobs/node_modules/lodash/utility/identity.js":[function(require,module,exports){
 /**
  * This method returns the first argument provided to it.
  *
@@ -3138,6 +3212,7 @@ var React = require('react');
 var Firebase = require('firebase');
 var Promise = require('bluebird');
 var debounce = require('lodash/function').debounce;
+var unescape = require('lodash/string/unescape');
 var mui = require('material-ui');
 var ThemeManager = new mui.Styles.ThemeManager();
 
@@ -3229,8 +3304,7 @@ var App = React.createClass({
 	_navSelect: function _navSelect(e, selectedIndex, menuItem) {
 		var _this2 = this;
 
-		console.log(selectedIndex, menuItem);
-		this.threadRef.off();
+		this.threadRef.off(); // clean up previous firebase listeners
 		this.threadRef = itemRef.child(this.state.postIds[selectedIndex].id + '/kids');
 		this.setState({ currentThread: [], selectedIndex: selectedIndex });
 		this.threadRef.on('value', function (threadIds) {
@@ -3245,18 +3319,13 @@ var App = React.createClass({
 		var _this3 = this;
 
 		console.log('update');
-		// if (!this.state.currentThread.length) {
-		// 	return (
-
-		// 	);
-		// }
 		var menuItems = this.state.postIds.map(function (post) {
 			return { text: post.title.slice('Ask HN: Who is hiring? ('.length, -1), postId: post.id };
 		});
 		return React.createElement(
 			'div',
 			null,
-			React.createElement(AppBar, { title: 'HN: Who\'s Hiring?',
+			React.createElement(AppBar, { title: 'Who\'s Hiring?',
 				onLeftIconButtonTouchTap: this._toggleNav,
 				iconElementRight: React.createElement(
 					'div',
@@ -3291,8 +3360,13 @@ var Page = React.createClass({
 		}).map(function (post, i) {
 			return React.createElement(
 				Card,
-				{ key: post.id, style: { margin: "10px 0" } },
-				React.createElement(CardText, { dangerouslySetInnerHTML: { __html: post.text } })
+				{ key: post.id, style: { margin: "10px 0" }, initiallyExpanded: true },
+				React.createElement(CardHeader, {
+					title: post.text.split('<p>')[0].replace(/(<([^>]+)>)/ig, "").replace(/&#x27;/g, "'").replace(/&#x2F;/g, "/").slice(0, 60) + '...',
+					subtitle: post.by,
+					showExpandableButton: true
+				}),
+				React.createElement(CardText, { dangerouslySetInnerHTML: { __html: post.text }, expandable: true })
 			);
 		});
 
@@ -3315,7 +3389,7 @@ var Search = React.createClass({
 	}
 });
 
-},{"bluebird":"bluebird","firebase":"firebase","lodash/function":"/Users/will/Code/hnjobs/node_modules/lodash/function.js","material-ui":"material-ui","react":"react"}],"/Users/will/Code/hnjobs/src/init.jsx":[function(require,module,exports){
+},{"bluebird":"bluebird","firebase":"firebase","lodash/function":"/Users/will/Code/hnjobs/node_modules/lodash/function.js","lodash/string/unescape":"/Users/will/Code/hnjobs/node_modules/lodash/string/unescape.js","material-ui":"material-ui","react":"react"}],"/Users/will/Code/hnjobs/src/init.jsx":[function(require,module,exports){
 'use strict';
 
 var React = require('react');

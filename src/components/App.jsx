@@ -3,6 +3,7 @@ const React = require('react');
 const Firebase = require('firebase');
 const Promise = require('bluebird');
 const debounce = require('lodash/function').debounce;
+const unescape = require('lodash/string/unescape');
 const mui = require('material-ui');
 const ThemeManager = new mui.Styles.ThemeManager();
 
@@ -75,8 +76,7 @@ const App = React.createClass({
 		this.refs.leftNav.toggle();
 	},
 	_navSelect(e, selectedIndex, menuItem) {
-		console.log(selectedIndex, menuItem);
-		this.threadRef.off();
+		this.threadRef.off(); // clean up previous firebase listeners
 		this.threadRef = itemRef.child(this.state.postIds[selectedIndex].id+'/kids');
 		this.setState({ currentThread: [], selectedIndex });
 		this.threadRef.on('value', (threadIds) => {
@@ -89,21 +89,16 @@ const App = React.createClass({
 	},
 	render() {
 		console.log('update');
-		// if (!this.state.currentThread.length) {
-		// 	return (
-				
-		// 	);
-		// }
 		const menuItems = this.state.postIds.map((post) => ({ text: post.title.slice('Ask HN: Who is hiring? ('.length, -1), postId: post.id }));
 		return (
 			<div>
-				<AppBar title="HN: Who's Hiring?"
+				<AppBar title="Who's Hiring?"
 					onLeftIconButtonTouchTap={this._toggleNav}
 					iconElementRight={
 						<div>
 							<Search onChange={debounce((value) => this.setState({ search: value }), 600)} />
 						</div>
-					} 
+					}
 				/>
 				<LeftNav ref="leftNav" menuItems={menuItems} selectedIndex={this.state.selectedIndex} docked={false} onChange={this._navSelect} />
 				{this.state.currentThread.length
@@ -125,8 +120,18 @@ const Page = React.createClass({
 			.filter((el) => el && !el.deleted)
 			.filter((post) => post.text.toLowerCase().match(this.props.search.toLowerCase()))
 			.map((post, i) => (
-				<Card key={post.id} style={{margin: "10px 0"}}>
-					<CardText dangerouslySetInnerHTML={{__html: post.text}} />
+				<Card key={post.id} style={{margin: "10px 0"}} initiallyExpanded>
+					<CardHeader
+						title={post.text
+							.split('<p>')[0]
+							.replace(/(<([^>]+)>)/ig,"")
+							.replace(/&#x27;/g,"'")
+							.replace(/&#x2F;/g,"/")
+							.slice(0, 60)+'...'}
+						subtitle={post.by}
+						showExpandableButton
+					/>
+					<CardText dangerouslySetInnerHTML={{__html: post.text}} expandable />
 				</Card>
 			));
 

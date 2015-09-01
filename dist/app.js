@@ -3219,11 +3219,16 @@ var ThemeManager = new mui.Styles.ThemeManager();
 var Card = mui.Card;
 var CardHeader = mui.CardHeader;
 var CardText = mui.CardText;
+var CardActions = mui.CardActions;
 var CircularProgress = mui.CircularProgress;
 var LeftNav = mui.LeftNav;
 var AppBar = mui.AppBar;
 var TextField = mui.TextField;
 var FontIcon = mui.FontIcon;
+var Avatar = mui.Avatar;
+var FlatButton = mui.FlatButton;
+var RaisedButton = mui.RaisedButton;
+var ClearFix = mui.ClearFix;
 
 var userRef = new Firebase('https://hacker-news.firebaseio.com/v0/user');
 var itemRef = new Firebase('https://hacker-news.firebaseio.com/v0/item');
@@ -3340,6 +3345,17 @@ var App = React.createClass({
 				'div',
 				{ style: { textAlign: "center" } },
 				React.createElement(CircularProgress, { mode: 'indeterminate', size: 2 })
+			),
+			React.createElement(ClearFix, null),
+			React.createElement(
+				'p',
+				{ style: { textAlign: "center", fontFamily: "Roboto, sans-serif" } },
+				'Design and code by ',
+				React.createElement(
+					'a',
+					{ href: 'http://willacton.com' },
+					'Will Acton'
+				)
 			)
 		);
 	}
@@ -3347,9 +3363,27 @@ var App = React.createClass({
 
 module.exports = App;
 
+// {title={post.text
+// 							.split('<p>')[0]
+// 							.replace(/(<([^>]+)>)/ig,"")
+// 							.replace(/&#x27;/g,"'")
+// 							.replace(/&#x2F;/g,"/")
+// 							.slice(0, 60)+'...'}
+// 						subtitle={post.by}}
+
 var Page = React.createClass({
 	displayName: 'Page',
 
+	getInitialState: function getInitialState() {
+		return {
+			page: 1
+		};
+	},
+	_nextPage: function _nextPage() {
+		this.setState({
+			page: this.state.page + 1
+		});
+	},
 	render: function render() {
 		var _this4 = this;
 
@@ -3357,23 +3391,44 @@ var Page = React.createClass({
 			return el && !el.deleted;
 		}).filter(function (post) {
 			return post.text.toLowerCase().match(_this4.props.search.toLowerCase());
-		}).map(function (post, i) {
-			return React.createElement(
-				Card,
-				{ key: post.id, style: { margin: "10px 0" }, initiallyExpanded: true },
-				React.createElement(CardHeader, {
-					title: post.text.split('<p>')[0].replace(/(<([^>]+)>)/ig, "").replace(/&#x27;/g, "'").replace(/&#x2F;/g, "/").slice(0, 60) + '...',
-					subtitle: post.by,
-					showExpandableButton: true
-				}),
-				React.createElement(CardText, { dangerouslySetInnerHTML: { __html: post.text }, expandable: true })
-			);
 		});
 
+		console.log(this.state.page, Math.ceil(thread.length / 10));
 		return React.createElement(
 			'div',
-			{ style: { width: "90%", margin: "0 auto", wordWrap: 'break-word' } },
-			thread
+			{ style: { width: "90%", margin: "5px auto", wordWrap: 'break-word' } },
+			thread.slice(0, this.state.page * 10).map(function (post, i) {
+				return React.createElement(
+					Card,
+					{ key: post.id, style: { margin: "10px 0" }, initiallyExpanded: true },
+					React.createElement(CardHeader, {
+						title: 'Post',
+						subtitle: React.createElement(
+							'a',
+							{ href: "https://news.ycombinator.com/user?id=" + post.by },
+							'by ',
+							post.by
+						),
+						avatar: React.createElement(
+							Avatar,
+							null,
+							'H'
+						),
+						showExpandableButton: true
+					}),
+					React.createElement(CardText, { dangerouslySetInnerHTML: { __html: post.text }, expandable: true }),
+					React.createElement(
+						CardActions,
+						{ expandable: true, style: { textAlign: "right" } },
+						React.createElement(FlatButton, { linkButton: true, labelStyle: { marginRight: "12px" }, href: "https://news.ycombinator.com/item?id=" + post.id, target: '_blank', label: 'Link' })
+					)
+				);
+			}),
+			React.createElement(
+				'div',
+				{ style: { textAlign: "center" } },
+				this.state.page <= Math.ceil(thread.length / 10) ? React.createElement(RaisedButton, { backgroundColor: '#ff6600', labelColor: mui.Styles.Colors.darkWhite, label: 'More', onClick: this._nextPage, fullWidth: true }) : ''
+			)
 		);
 	}
 });
@@ -3388,6 +3443,10 @@ var Search = React.createClass({
 		return React.createElement(TextField, { onChange: this.handleChange, style: { marginRight: "20px" }, hintText: 'search' });
 	}
 });
+/*this.state.page > 1
+? (<FlatButton label="Previous" onClick={this._prevPage} />)
+: ''
+*/
 
 },{"bluebird":"bluebird","firebase":"firebase","lodash/function":"/Users/will/Code/hnjobs/node_modules/lodash/function.js","lodash/string/unescape":"/Users/will/Code/hnjobs/node_modules/lodash/string/unescape.js","material-ui":"material-ui","react":"react"}],"/Users/will/Code/hnjobs/src/init.jsx":[function(require,module,exports){
 'use strict';

@@ -7,7 +7,7 @@ const unescape = require('lodash/string/unescape');
 const mui = require('material-ui');
 const ThemeManager = new mui.Styles.ThemeManager();
 
-const {Card, CardHeader, CardText, CircularProgress, LeftNav, AppBar, TextField, FontIcon} = mui;
+const {Card, CardHeader, CardText, CardActions, CircularProgress, LeftNav, AppBar, TextField, FontIcon, Avatar, FlatButton, RaisedButton, ClearFix} = mui;
 
 const userRef = new Firebase('https://hacker-news.firebaseio.com/v0/user');
 const itemRef = new Firebase('https://hacker-news.firebaseio.com/v0/item');
@@ -107,6 +107,8 @@ const App = React.createClass({
 						<CircularProgress mode="indeterminate" size={2} />
 					</div>)
 				}
+				<ClearFix />
+				<p style={{textAlign: "center", fontFamily: "Roboto, sans-serif"}}>Design and code by <a href="http://willacton.com">Will Acton</a></p>
 			</div>
 		);
 	}
@@ -114,30 +116,60 @@ const App = React.createClass({
 
 module.exports = App;
 
+// {title={post.text
+// 							.split('<p>')[0]
+// 							.replace(/(<([^>]+)>)/ig,"")
+// 							.replace(/&#x27;/g,"'")
+// 							.replace(/&#x2F;/g,"/")
+// 							.slice(0, 60)+'...'}
+// 						subtitle={post.by}}
+
 const Page = React.createClass({
+	getInitialState() {
+		return {
+			page: 1
+		}
+	},
+	_nextPage() {
+		this.setState({
+			page: this.state.page +1
+		});
+	},
 	render() {
 		const thread = this.props.posts
 			.filter((el) => el && !el.deleted)
-			.filter((post) => post.text.toLowerCase().match(this.props.search.toLowerCase()))
-			.map((post, i) => (
-				<Card key={post.id} style={{margin: "10px 0"}} initiallyExpanded>
-					<CardHeader
-						title={post.text
-							.split('<p>')[0]
-							.replace(/(<([^>]+)>)/ig,"")
-							.replace(/&#x27;/g,"'")
-							.replace(/&#x2F;/g,"/")
-							.slice(0, 60)+'...'}
-						subtitle={post.by}
-						showExpandableButton
-					/>
-					<CardText dangerouslySetInnerHTML={{__html: post.text}} expandable />
-				</Card>
-			));
-
+			.filter((post) => post.text.toLowerCase().match(this.props.search.toLowerCase()));
+			
+		console.log(this.state.page, Math.ceil(thread.length / 10));
 		return (
-			<div style={{width: "90%", margin: "0 auto", wordWrap: 'break-word'}}>
-				{thread}
+			<div style={{width: "90%", margin: "5px auto", wordWrap: 'break-word'}}>
+				{thread
+					.slice(0, this.state.page*10)
+					.map((post, i) => (
+						<Card key={post.id} style={{margin: "10px 0"}} initiallyExpanded>
+							<CardHeader
+								title="Post"
+								subtitle={(<a href={"https://news.ycombinator.com/user?id="+post.by}>by {post.by}</a>)}
+								avatar={<Avatar>H</Avatar>}
+								showExpandableButton
+							/>
+							<CardText dangerouslySetInnerHTML={{__html: post.text}} expandable />
+							<CardActions expandable style={{textAlign: "right"}}>
+								<FlatButton linkButton labelStyle={{marginRight: "12px"}} href={"https://news.ycombinator.com/item?id="+post.id} target="_blank" label="Link" />
+							</CardActions>
+						</Card>
+					))
+				}
+				{/*this.state.page > 1
+					? (<FlatButton label="Previous" onClick={this._prevPage} />)
+					: ''
+				*/}
+				<div style={{textAlign: "center"}}>
+				{this.state.page <= Math.ceil(thread.length / 10)
+					? (<RaisedButton backgroundColor="#ff6600" labelColor={mui.Styles.Colors.darkWhite} label="More" onClick={this._nextPage} fullWidth />)
+					: ''
+				}
+				</div>
 			</div>
 		);
 	}

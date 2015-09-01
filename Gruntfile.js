@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 				src: ['.'],
 				dest: 'dist/libs.js',
 				options: {
-					alias: ['react:', 'firebase:', 'bluebird:', 'material-ui:', 'react-tap-event-plugin:']
+					alias: ['react:', 'firebase:', 'lodash:', 'bluebird:', 'material-ui:', 'react-tap-event-plugin:', 'react-responsive:']
 				}
 			},
 			app: {
@@ -17,7 +17,7 @@ module.exports = function(grunt) {
 				options: {
 					watch: true,
 					keepAlive: true,
-					external: ['react', 'firebase', 'bluebird', 'material-ui', 'react-tap-event-plugin']
+					external: ['react', 'firebase', 'lodash', 'bluebird', 'material-ui', 'react-tap-event-plugin', 'react-responsive']
 				}
 			}
 		}

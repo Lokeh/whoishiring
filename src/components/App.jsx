@@ -30,7 +30,7 @@ function retrieveItems(...ids) {
 const App = React.createClass({
 	getInitialState() {
 		return {
-			postIds: [],
+			threadIds: [],
 			selectedIndex: 0,
 			currentThread: [],
 			search: "",
@@ -59,12 +59,12 @@ const App = React.createClass({
 		// Firebase HN API
 		userRef.child('whoishiring/submitted').on('value', (data) => {
 			const ids = data.val();
-			retrieveItems(...ids).then((posts) => {
-				const postIds = posts.filter((post) => post.title && post.title.substr(0, "Ask HN: Who is hiring?".length).toLowerCase() === "ask hn: who is hiring?")
-				this.setState({ postIds });
-				this.threadRef = itemRef.child(postIds[0].id+'/kids');
-				this.threadRef.on('value', (threadIds) => {
-					retrieveItems(...threadIds.val()).then((thread) => {
+			retrieveItems(...ids).then((threads) => {
+				const threadIds = threads.filter((post) => post.title && post.title.substr(0, "Ask HN: Who is hiring?".length).toLowerCase() === "ask hn: who is hiring?")
+				this.setState({ threadIds });
+				this.threadRef = itemRef.child(threadIds[0].id+'/kids');
+				this.threadRef.on('value', (postIds) => {
+					retrieveItems(...postIds.val()).then((thread) => {
 						this.setState({
 							currentThread: thread,
 							page: 1
@@ -80,7 +80,7 @@ const App = React.createClass({
 	_navSelect(e, selectedIndex, menuItem) {
 		// get selected thread
 		this.threadRef.off(); // clean up previous firebase listeners
-		this.threadRef = itemRef.child(this.state.postIds[selectedIndex].id+'/kids');
+		this.threadRef = itemRef.child(this.state.threadIds[selectedIndex].id+'/kids');
 		this.setState({ currentThread: [], selectedIndex });
 		this.threadRef.on('value', (threadIds) => {
 			retrieveItems(...threadIds.val()).then((thread) => {
@@ -98,7 +98,7 @@ const App = React.createClass({
 	},
 	render() {
 		console.log('update');
-		const menuItems = this.state.postIds.map((post) => ({ text: post.title.slice('Ask HN: Who is hiring? ('.length, -1), postId: post.id }));
+		const menuItems = this.state.threadIds.map((post) => ({ text: post.title.slice('Ask HN: Who is hiring? ('.length, -1), postId: post.id }));
 		return (
 			<div>
 				<AppBar title="Who's Hiring?"

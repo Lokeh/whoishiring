@@ -2506,7 +2506,12 @@ var Search = React.createClass({
 		this.props.onChange(e.target.value);
 	},
 	render: function render() {
-		return React.createElement(TextField, { onChange: this.handleChange, style: { marginRight: "20px" }, hintText: 'search' });
+		return React.createElement(
+			'div',
+			{ style: { marginRight: "50px" } },
+			React.createElement(FontIcon, { className: 'fa fa-search', color: mui.Styles.Colors.darkWhite, style: { margin: "0 5px", top: "5px", fontSize: "20px" } }),
+			React.createElement(TextField, { onChange: this.handleChange, hintText: 'regexp' })
+		);
 	}
 });
 /*this.state.page > 1

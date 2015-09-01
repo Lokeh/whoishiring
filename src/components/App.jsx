@@ -185,7 +185,10 @@ const Search = React.createClass({
 	},
 	render() {
 		return (
-			<TextField onChange={this.handleChange} style={{marginRight: "20px"}} hintText="search" />
+			<div style={{marginRight: "50px"}}>
+				<FontIcon className="fa fa-search" color={mui.Styles.Colors.darkWhite} style={{margin: "0 5px", top: "5px", fontSize: "20px"}} />
+				<TextField onChange={this.handleChange} hintText="regexp" />
+			</div>
 		);
 	}
 });

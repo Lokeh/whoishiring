@@ -6,18 +6,18 @@ module.exports = function(grunt) {
 		browserify: {
 			libs: {
 				src: ['.'],
-				dest: 'dist/js/libs.js',
+				dest: 'dist/libs.js',
 				options: {
-					alias: ['react:', 'material-ui:', 'react-tap-event-plugin:']
+					alias: ['react:', 'firebase:', 'bluebird:', 'material-ui:', 'react-tap-event-plugin:']
 				}
 			},
 			app: {
-				src: ['src/js/init.jsx'],
-				dest: 'dist/js/app.js',
+				src: ['src/init.jsx'],
+				dest: 'dist/app.js',
 				options: {
 					watch: true,
 					keepAlive: true,
-					external: ['react', 'material-ui', 'react-tap-event-plugin']
+					external: ['react', 'firebase', 'bluebird', 'material-ui', 'react-tap-event-plugin']
 				}
 			}
 		}

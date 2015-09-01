@@ -25,6 +25,7 @@
     "lodash": "^3.10.1",
     "material-ui": "^0.11.0",
     "react": "^0.13.3",
+    "react-responsive": "0.0.8",
     "react-tap-event-plugin": "^0.1.7"
   }
 }

@@ -2,12 +2,12 @@
 const React = require('react');
 const Firebase = require('firebase');
 const Promise = require('bluebird');
-const debounce = require('lodash/function').debounce;
-const unescape = require('lodash/string/unescape');
+const debounce = require('lodash/function/debounce');
 const mui = require('material-ui');
+const MediaQuery = require('react-responsive');
 const ThemeManager = new mui.Styles.ThemeManager();
 
-const {Card, CardHeader, CardText, CardActions, CircularProgress, LeftNav, AppBar, TextField, FontIcon, Avatar, FlatButton, RaisedButton, ClearFix} = mui;
+const {Card, CardHeader, CardText, CardActions, CircularProgress, LeftNav, AppBar, TextField, FontIcon, Avatar, FlatButton, RaisedButton, IconButton, ClearFix} = mui;
 
 const userRef = new Firebase('https://hacker-news.firebaseio.com/v0/user');
 const itemRef = new Firebase('https://hacker-news.firebaseio.com/v0/item');
@@ -60,7 +60,7 @@ const App = React.createClass({
 		userRef.child('whoishiring/submitted').on('value', (data) => {
 			const ids = data.val();
 			retrieveItems(...ids).then((posts) => {
-				const postIds = posts.filter((post) => post.title && post.title.substr(0, "Ask HN: Who is hiring?".length) === "Ask HN: Who is hiring?")
+				const postIds = posts.filter((post) => post.title && post.title.substr(0, "Ask HN: Who is hiring?".length).toLowerCase() === "ask hn: who is hiring?")
 				this.setState({ postIds });
 				this.threadRef = itemRef.child(postIds[0].id+'/kids');
 				this.threadRef.on('value', (threadIds) => {
@@ -105,7 +105,12 @@ const App = React.createClass({
 					onLeftIconButtonTouchTap={this._toggleNav}
 					iconElementRight={
 						<div>
-							<Search onChange={debounce((value) => this.setState({ search: value, page: 1 }), 600)} />
+							<MediaQuery minDeviceWidth={600}>
+								<Search onChange={debounce((value) => this.setState({ search: value, page: 1 }), 400)} />
+							</MediaQuery>
+							<MediaQuery maxDeviceWidth={599}>
+								<IconButton iconClassName="fa fa-search" iconStyle={{color: mui.Styles.Colors.darkWhite}} />
+							</MediaQuery>
 						</div>
 					}
 				/>

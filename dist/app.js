@@ -3260,7 +3260,8 @@ var App = React.createClass({
 			postIds: [],
 			selectedIndex: 0,
 			currentThread: [],
-			search: ""
+			search: "",
+			page: 1
 		};
 	},
 	childContextTypes: {
@@ -3296,7 +3297,8 @@ var App = React.createClass({
 				_this.threadRef.on('value', function (threadIds) {
 					retrieveItems.apply(undefined, _toConsumableArray(threadIds.val())).then(function (thread) {
 						_this.setState({
-							currentThread: thread
+							currentThread: thread,
+							page: 1
 						});
 					});
 				});
@@ -3309,15 +3311,22 @@ var App = React.createClass({
 	_navSelect: function _navSelect(e, selectedIndex, menuItem) {
 		var _this2 = this;
 
+		// get selected thread
 		this.threadRef.off(); // clean up previous firebase listeners
 		this.threadRef = itemRef.child(this.state.postIds[selectedIndex].id + '/kids');
 		this.setState({ currentThread: [], selectedIndex: selectedIndex });
 		this.threadRef.on('value', function (threadIds) {
 			retrieveItems.apply(undefined, _toConsumableArray(threadIds.val())).then(function (thread) {
 				_this2.setState({
-					currentThread: thread
+					currentThread: thread,
+					page: 1
 				});
 			});
+		});
+	},
+	_nextPage: function _nextPage() {
+		this.setState({
+			page: this.state.page + 1
 		});
 	},
 	render: function render() {
@@ -3336,12 +3345,12 @@ var App = React.createClass({
 					'div',
 					null,
 					React.createElement(Search, { onChange: debounce(function (value) {
-							return _this3.setState({ search: value });
+							return _this3.setState({ search: value, page: 1 });
 						}, 600) })
 				)
 			}),
 			React.createElement(LeftNav, { ref: 'leftNav', menuItems: menuItems, selectedIndex: this.state.selectedIndex, docked: false, onChange: this._navSelect }),
-			this.state.currentThread.length ? React.createElement(Page, { posts: this.state.currentThread, search: this.state.search }) : React.createElement(
+			this.state.currentThread.length ? React.createElement(Page, { posts: this.state.currentThread, search: this.state.search, page: this.state.page, nextPage: this._nextPage }) : React.createElement(
 				'div',
 				{ style: { textAlign: "center" } },
 				React.createElement(CircularProgress, { mode: 'indeterminate', size: 2 })
@@ -3374,16 +3383,6 @@ module.exports = App;
 var Page = React.createClass({
 	displayName: 'Page',
 
-	getInitialState: function getInitialState() {
-		return {
-			page: 1
-		};
-	},
-	_nextPage: function _nextPage() {
-		this.setState({
-			page: this.state.page + 1
-		});
-	},
 	render: function render() {
 		var _this4 = this;
 
@@ -3393,11 +3392,11 @@ var Page = React.createClass({
 			return post.text.toLowerCase().match(_this4.props.search.toLowerCase());
 		});
 
-		console.log(this.state.page, Math.ceil(thread.length / 10));
+		console.log(this.props.page, Math.ceil(thread.length / 10));
 		return React.createElement(
 			'div',
 			{ style: { width: "90%", margin: "5px auto", wordWrap: 'break-word' } },
-			thread.slice(0, this.state.page * 10).map(function (post, i) {
+			thread.slice(0, this.props.page * 10).map(function (post, i) {
 				return React.createElement(
 					Card,
 					{ key: post.id, style: { margin: "10px 0" }, initiallyExpanded: true },
@@ -3427,7 +3426,7 @@ var Page = React.createClass({
 			React.createElement(
 				'div',
 				{ style: { textAlign: "center" } },
-				this.state.page <= Math.ceil(thread.length / 10) ? React.createElement(RaisedButton, { backgroundColor: '#ff6600', labelColor: mui.Styles.Colors.darkWhite, label: 'More', onClick: this._nextPage, fullWidth: true }) : ''
+				this.props.page < Math.ceil(thread.length / 10) ? React.createElement(RaisedButton, { backgroundColor: '#ff6600', labelColor: mui.Styles.Colors.darkWhite, label: 'More', onClick: this.props.nextPage, fullWidth: true }) : ''
 			)
 		);
 	}

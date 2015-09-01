@@ -33,7 +33,8 @@ const App = React.createClass({
 			postIds: [],
 			selectedIndex: 0,
 			currentThread: [],
-			search: ""
+			search: "",
+			page: 1
 		};
 	},
 	childContextTypes: {
@@ -65,7 +66,8 @@ const App = React.createClass({
 				this.threadRef.on('value', (threadIds) => {
 					retrieveItems(...threadIds.val()).then((thread) => {
 						this.setState({
-							currentThread: thread
+							currentThread: thread,
+							page: 1
 						});
 					});
 				});
@@ -76,15 +78,22 @@ const App = React.createClass({
 		this.refs.leftNav.toggle();
 	},
 	_navSelect(e, selectedIndex, menuItem) {
+		// get selected thread
 		this.threadRef.off(); // clean up previous firebase listeners
 		this.threadRef = itemRef.child(this.state.postIds[selectedIndex].id+'/kids');
 		this.setState({ currentThread: [], selectedIndex });
 		this.threadRef.on('value', (threadIds) => {
 			retrieveItems(...threadIds.val()).then((thread) => {
 				this.setState({
-					currentThread: thread
+					currentThread: thread,
+					page: 1
 				});
 			});
+		});
+	},
+	_nextPage() {
+		this.setState({
+			page: this.state.page +1
 		});
 	},
 	render() {
@@ -96,13 +105,13 @@ const App = React.createClass({
 					onLeftIconButtonTouchTap={this._toggleNav}
 					iconElementRight={
 						<div>
-							<Search onChange={debounce((value) => this.setState({ search: value }), 600)} />
+							<Search onChange={debounce((value) => this.setState({ search: value, page: 1 }), 600)} />
 						</div>
 					}
 				/>
 				<LeftNav ref="leftNav" menuItems={menuItems} selectedIndex={this.state.selectedIndex} docked={false} onChange={this._navSelect} />
 				{this.state.currentThread.length
-					? <Page posts={this.state.currentThread} search={this.state.search} />
+					? <Page posts={this.state.currentThread} search={this.state.search} page={this.state.page} nextPage={this._nextPage} />
 					: (<div style={{textAlign: "center"}}>
 						<CircularProgress mode="indeterminate" size={2} />
 					</div>)
@@ -125,26 +134,16 @@ module.exports = App;
 // 						subtitle={post.by}}
 
 const Page = React.createClass({
-	getInitialState() {
-		return {
-			page: 1
-		}
-	},
-	_nextPage() {
-		this.setState({
-			page: this.state.page +1
-		});
-	},
 	render() {
 		const thread = this.props.posts
 			.filter((el) => el && !el.deleted)
 			.filter((post) => post.text.toLowerCase().match(this.props.search.toLowerCase()));
 			
-		console.log(this.state.page, Math.ceil(thread.length / 10));
+		console.log(this.props.page, Math.ceil(thread.length / 10));
 		return (
 			<div style={{width: "90%", margin: "5px auto", wordWrap: 'break-word'}}>
 				{thread
-					.slice(0, this.state.page*10)
+					.slice(0, this.props.page*10)
 					.map((post, i) => (
 						<Card key={post.id} style={{margin: "10px 0"}} initiallyExpanded>
 							<CardHeader
@@ -165,8 +164,8 @@ const Page = React.createClass({
 					: ''
 				*/}
 				<div style={{textAlign: "center"}}>
-				{this.state.page <= Math.ceil(thread.length / 10)
-					? (<RaisedButton backgroundColor="#ff6600" labelColor={mui.Styles.Colors.darkWhite} label="More" onClick={this._nextPage} fullWidth />)
+				{this.props.page < Math.ceil(thread.length / 10)
+					? (<RaisedButton backgroundColor="#ff6600" labelColor={mui.Styles.Colors.darkWhite} label="More" onClick={this.props.nextPage} fullWidth />)
 					: ''
 				}
 				</div>

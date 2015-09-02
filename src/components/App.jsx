@@ -186,7 +186,7 @@ const Search = React.createClass({
 	render() {
 		return (
 			<div style={{marginRight: "50px"}}>
-				<FontIcon className="fa fa-search" color={mui.Styles.Colors.darkWhite} style={{margin: "0 5px", top: "5px", fontSize: "20px"}} />
+				<FontIcon className="fa fa-search" color={mui.Styles.Colors.darkWhite} style={{margin: "0 5px", top: "3px", fontSize: "20px"}} />
 				<TextField onChange={this.handleChange} hintText="regexp" />
 			</div>
 		);

@@ -609,7 +609,7 @@ var Search = React.createClass({
 		return React.createElement(
 			'div',
 			{ style: { marginRight: "50px" } },
-			React.createElement(FontIcon, { className: 'fa fa-search', color: mui.Styles.Colors.darkWhite, style: { margin: "0 5px", top: "5px", fontSize: "20px" } }),
+			React.createElement(FontIcon, { className: 'fa fa-search', color: mui.Styles.Colors.darkWhite, style: { margin: "0 5px", top: "3px", fontSize: "20px" } }),
 			React.createElement(TextField, { onChange: this.handleChange, hintText: 'regexp' })
 		);
 	}

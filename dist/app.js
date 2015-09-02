@@ -455,8 +455,7 @@ var App = React.createClass({
 				_this.threadRef.on('value', function (postIds) {
 					retrieveItems.apply(undefined, _toConsumableArray(postIds.val())).then(function (thread) {
 						_this.setState({
-							currentThread: thread,
-							page: 1
+							currentThread: thread
 						});
 					});
 				});
@@ -472,12 +471,11 @@ var App = React.createClass({
 		// get selected thread
 		this.threadRef.off(); // clean up previous firebase listeners
 		this.threadRef = itemRef.child(this.state.threadIds[selectedIndex].id + '/kids');
-		this.setState({ currentThread: [], selectedIndex: selectedIndex });
+		this.setState({ currentThread: [], selectedIndex: selectedIndex, page: 1 });
 		this.threadRef.on('value', function (threadIds) {
 			retrieveItems.apply(undefined, _toConsumableArray(threadIds.val())).then(function (thread) {
 				_this2.setState({
-					currentThread: thread,
-					page: 1
+					currentThread: thread
 				});
 			});
 		});
@@ -620,10 +618,6 @@ var Search = React.createClass({
 		);
 	}
 });
-/*this.state.page > 1
-? (<FlatButton label="Previous" onClick={this._prevPage} />)
-: ''
-*/
 
 },{"bluebird":"bluebird","firebase":"firebase","lodash/function/debounce":"/Users/will/Code/hnjobs/node_modules/lodash/function/debounce.js","material-ui":"material-ui","react":"react","react-responsive":"react-responsive"}],"/Users/will/Code/hnjobs/src/init.jsx":[function(require,module,exports){
 'use strict';

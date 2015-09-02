@@ -1,5 +1,7 @@
 # Hacker News: Who's Hiring?
 
+[Live site](http://projects.willacton.com/whoishiring)
+
 An app to easily filter and look through postings in the "Ask HN: Who is hiring?" threads.
 
 The app can query all available data dating back to 2011, and is live updated while a thread is going.

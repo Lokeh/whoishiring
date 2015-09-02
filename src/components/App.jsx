@@ -122,7 +122,9 @@ const App = React.createClass({
 					</div>)
 				}
 				<ClearFix />
-				<p style={{textAlign: "center", fontFamily: "Roboto, sans-serif"}}>Design and code by <a href="http://willacton.com">Will Acton</a></p>
+				<p style={{textAlign: "center", fontFamily: "Roboto, sans-serif"}}>
+					Design and code by <a href="http://willacton.com">Will Acton</a> | <a href="https://github.com/Lokeh/whoishiring">Source</a>
+				</p>
 			</div>
 		);
 	}

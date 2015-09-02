@@ -531,6 +531,12 @@ var App = React.createClass({
 					'a',
 					{ href: 'http://willacton.com' },
 					'Will Acton'
+				),
+				' | ',
+				React.createElement(
+					'a',
+					{ href: 'https://github.com/Lokeh/whoishiring' },
+					'Source'
 				)
 			)
 		);

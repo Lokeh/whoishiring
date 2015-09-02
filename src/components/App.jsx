@@ -66,8 +66,7 @@ const App = React.createClass({
 				this.threadRef.on('value', (postIds) => {
 					retrieveItems(...postIds.val()).then((thread) => {
 						this.setState({
-							currentThread: thread,
-							page: 1
+							currentThread: thread
 						});
 					});
 				});
@@ -81,12 +80,11 @@ const App = React.createClass({
 		// get selected thread
 		this.threadRef.off(); // clean up previous firebase listeners
 		this.threadRef = itemRef.child(this.state.threadIds[selectedIndex].id+'/kids');
-		this.setState({ currentThread: [], selectedIndex });
+		this.setState({ currentThread: [], selectedIndex, page: 1 });
 		this.threadRef.on('value', (threadIds) => {
 			retrieveItems(...threadIds.val()).then((thread) => {
 				this.setState({
-					currentThread: thread,
-					page: 1
+					currentThread: thread
 				});
 			});
 		});
@@ -166,10 +164,6 @@ const Page = React.createClass({
 						</Card>
 					))
 				}
-				{/*this.state.page > 1
-					? (<FlatButton label="Previous" onClick={this._prevPage} />)
-					: ''
-				*/}
 				<div style={{textAlign: "center"}}>
 				{this.props.page < Math.ceil(thread.length / 10)
 					? (<RaisedButton backgroundColor="#ff6600" labelColor={mui.Styles.Colors.darkWhite} label="More" onClick={this.props.nextPage} fullWidth />)

@@ -12,10 +12,12 @@ Or, getting more advance: `(?=.*javascript)(?=.*remote|portland)`
 
 I encourage anyone to fork it, hack away, create pull requests! It's easy enough:
 
-`git clone https://github.com/Lokeh/whoishiring.git`
-`cd whoishiring/`
-`npm install`
-`grunt`
+```
+git clone https://github.com/Lokeh/whoishiring.git
+cd whoishiring/
+npm install
+grunt
+```
 
 Grunt-browserify will then watch files in src/ and build them into dist/app.js.
 

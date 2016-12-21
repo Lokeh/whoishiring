@@ -2,33 +2,22 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as Cactus from 'cactus';
 import { compose } from 'ramda';
-import { view } from './view';
+import { main } from './app';
 
-function main(sources: any) {
-    const actions = Cactus.selectable<any>(sources.events);
-    const inputChange$ = actions.select('input')
-        .map(({ value: ev }) => ({ name: ev.target.value }))
-        .startWith({ name: '' })
-        .do((v) => console.log(v));
+const drivers = {
+    render: Cactus.makeReactDOMDriver(document.getElementById('root')),
+    events: Cactus.makeEventDriver(),
+};
 
-    const { view$, events$ } = view(inputChange$);
-
-    return {
-        render: view$,
-        events: events$,
-    };
-}
+Cactus.run(main, drivers);
 
 // Hot Module Replacement API
 if (module.hot) {
-    module.hot.accept("./view", () => {
-        const Nextview = require("./view").view;
+    module.hot.accept("./app", () => {
+        const nextMain = require("./app").main;
         Cactus.run(
-            main,
-            {
-                render: Cactus.makeReactComponentDriver(),
-                events: Cactus.makeEventDriver(),
-            }
+            nextMain,
+            drivers
         );
     });
 }

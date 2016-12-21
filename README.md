@@ -1,7 +1,3 @@
-# react-hot-ts
+# whoishiring
 
-> Demo of React Hot Reloading + TypeScript
-
-```bash
-npm start
-```
+Project started with `react-hot-ts` boilerplate.

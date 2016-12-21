@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@types/core-js@^0.9.35":
+  version "0.9.35"
+  resolved "https://registry.yarnpkg.com/@types/core-js/-/core-js-0.9.35.tgz#444064e63711cdcc62ea844d27642f6efc2285f2"
+
 "@types/lodash@^4.14.43":
   version "4.14.44"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.44.tgz#04585ff0b80d5e434a5f86f15e7964be4f775cba"
@@ -147,13 +151,13 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
-awesome-typescript-loader@^2.2.4:
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/awesome-typescript-loader/-/awesome-typescript-loader-2.2.4.tgz#4185d60c035c25515f9c2a747fa5f69b2a001e9e"
+awesome-typescript-loader@^3.0.0-beta.17:
+  version "3.0.0-beta.17"
+  resolved "https://registry.yarnpkg.com/awesome-typescript-loader/-/awesome-typescript-loader-3.0.0-beta.17.tgz#f22cfb9c4365d8131f5cb737025ffcb3e516a8ec"
   dependencies:
     colors "^1.1.2"
-    enhanced-resolve "^2.2.2"
-    loader-utils "^0.2.6"
+    enhanced-resolve "^2.3.0"
+    loader-utils "^0.2.16"
     lodash "^4.13.1"
     object-assign "^4.1.0"
     source-map-support "^0.4.0"
@@ -549,7 +553,7 @@ encoding@^0.1.11:
   dependencies:
     iconv-lite "~0.4.13"
 
-enhanced-resolve@^2.2.2:
+enhanced-resolve@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-2.3.0.tgz#a115c32504b6302e85a76269d7a57ccdd962e359"
   dependencies:
@@ -1119,7 +1123,7 @@ lazy-cache@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"
 
-loader-utils@^0.2.11, loader-utils@^0.2.6, loader-utils@~0.2.2:
+loader-utils@^0.2.11, loader-utils@^0.2.16, loader-utils@~0.2.2:
   version "0.2.16"
   resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-0.2.16.tgz#f08632066ed8282835dff88dfb52704765adee6d"
   dependencies:
@@ -1928,7 +1932,7 @@ type-is@~1.6.13:
     media-typer "0.3.0"
     mime-types "~2.1.13"
 
-typescript@^2.0.3:
+typescript@^2.1.4:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.1.4.tgz#b53b69fb841126acb1dd4b397d21daba87572251"
 

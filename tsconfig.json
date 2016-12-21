@@ -9,8 +9,7 @@
     },
     "files": [
         "./declarations.d.ts",
-        "./src/components/Hello.tsx",
-        "./src/index.tsx"
+        "./src/**/*"
     ],
     "exclude": [
         "node_modules"

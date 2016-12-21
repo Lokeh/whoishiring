@@ -6,8 +6,11 @@
   "dependencies": {
     "@types/core-js": "^0.9.35",
     "cactus": "https://github.com/Lokeh/cactus.git",
+    "express": "^4.14.0",
     "react": "^15.4.1",
-    "react-dom": "^15.4.1"
+    "react-dom": "^15.4.1",
+    "webpack-dev-middleware": "^1.9.0",
+    "webpack-hot-middleware": "^2.13.2"
   },
   "devDependencies": {
     "@types/react": "^0.14.37",

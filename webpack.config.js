@@ -4,8 +4,9 @@ const path = require("path");
 module.exports = {
     entry: [
         "react-hot-loader/patch",
-        "webpack-dev-server/client?http://localhost:3000",
-        "webpack/hot/only-dev-server",
+        // "webpack-dev-server/client?http://localhost:3000",
+        // "webpack/hot/only-dev-server",
+        'webpack-hot-middleware/client',
         "./src/index.tsx",
     ],
     output: {
@@ -15,7 +16,7 @@ module.exports = {
     },
 
     // Enable sourcemaps for debugging webpack's output.
-    devtool: "source-map",
+    devtool: "eval",
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
@@ -23,11 +24,11 @@ module.exports = {
     },
 
     plugins: [
-        new webpack.DefinePlugin({
-            'process.env': {
-                'NODE_ENV': JSON.stringify('production')
-            }
-        }),
+        // new webpack.DefinePlugin({
+        //     'process.env': {
+        //         'NODE_ENV': JSON.stringify('production')
+        //     }
+        // }),
         new webpack.HotModuleReplacementPlugin(),
     ],
 
@@ -37,7 +38,7 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 loaders: [
-                    "react-hot-loader/webpack",
+                    // "react-hot-loader/webpack",
                     "awesome-typescript-loader"
                 ],
                 exclude: path.resolve(__dirname, 'node_modules'),
@@ -55,9 +56,9 @@ module.exports = {
     // assume a corresponding global variable exists and use that instead.
     // This is important because it allows us to avoid bundling all of our
     // dependencies, which allows browsers to cache those libraries between builds.
-    externals: {
-        "react": "React",
-        "react-dom": "ReactDOM"
-    },
+    // externals: {
+    //     "react": "React",
+    //     "react-dom": "ReactDOM"
+    // },
 
 };

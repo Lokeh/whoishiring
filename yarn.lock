@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@lilactown/cactus@^0.0.2-0":
-  version "0.0.2-0"
-  resolved "https://registry.yarnpkg.com/@lilactown/cactus/-/cactus-0.0.2-0.tgz#b71a340b7eafa80127fc18a0680c8d38e50eae34"
+"@lilactown/cactus@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@lilactown/cactus/-/cactus-0.1.0.tgz#b6ff595c7a8baa9a4a2327467fed79ef43f6964c"
   dependencies:
     "@types/lodash" "^4.14.43"
     "@types/ramda" "^0.0.2"

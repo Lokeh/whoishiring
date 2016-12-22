@@ -1,4 +1,4 @@
-import * as Cactus from 'cactus';
+import * as Cactus from '@lilactown/cactus';
 import { view } from './view';
 
 export function main(sources: any) {

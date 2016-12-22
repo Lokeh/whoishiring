@@ -1,7 +1,7 @@
 // import 'normalize.css';
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as Cactus from 'cactus';
+import * as Cactus from '@lilactown/cactus';
 import { makeHot } from './hmrDriver';
 import { main } from './app';
 

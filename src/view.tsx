@@ -1,4 +1,4 @@
-import * as Cactus from 'cactus';
+import * as Cactus from '@lilactown/cactus';
 import * as React from "react";
 import { compose } from 'ramda';
 

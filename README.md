@@ -1,3 +1,3 @@
-# whoishiring
+# Cactus Hot Reloading
 
-Project started with `react-hot-ts` boilerplate.
+Project built on [`react-hot-ts`](https://github.com/Glavin001/react-hot-ts) boilerplate.

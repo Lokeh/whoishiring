@@ -11,7 +11,7 @@ export function view(model$: any) {
     function View({ name }: { name: string }) {
         return (
             <div>
-                <div>Hola, { name }!</div>
+                <div>Hello, { name }!</div>
                 <Input value={name} />
             </div>
         )

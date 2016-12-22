@@ -6,7 +6,7 @@ import { main } from './app';
 
 const drivers = makeHot({
     render: Cactus.makeReactDOMDriver(document.getElementById('root')),
-    events: Cactus.makeEventDriver(),
+    events: Cactus.makeEventDriver(true),
 });
 
 Cactus.run(main, drivers);

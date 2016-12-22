@@ -1,6 +1,6 @@
 {
-  "name": "react-hot-ts",
-  "version": "0.1.0",
+  "name": "cactus-hot-reloading",
+  "version": "0.0.1",
   "description": "Demo of React Hot Reloading + TypeScript",
   "main": "./dist/bundle.js",
   "dependencies": {
@@ -29,12 +29,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Glavin001/react-hot-ts.git"
+    "url": "git+https://github.com/Lokeh/cactus-hot-reloading.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Glavin001/react-hot-ts/issues"
+    "url": "https://github.com/Lokeh/cactus-hot-reloading/issues"
   },
-  "homepage": "https://github.com/Glavin001/react-hot-ts#readme"
+  "homepage": "https://github.com/Lokeh/cactus-hot-reloading#README"
 }

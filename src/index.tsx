@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as Cactus from 'cactus';
-import { compose } from 'ramda';
+import { makeHot } from './hmrDriver';
 import { main } from './app';
 
-const drivers = {
+const drivers = makeHot({
     render: Cactus.makeReactDOMDriver(document.getElementById('root')),
     events: Cactus.makeEventDriver(),
-};
+});
 
 Cactus.run(main, drivers);
 

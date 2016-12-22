@@ -4,15 +4,15 @@ import { compose } from 'ramda';
 
 export function view(model$: any) {
     const Input = compose(
-        Cactus.observe('onChange'),
+        Cactus.observe<any>('onChange'),
         Cactus.withProps({ type: "text" }),
     )('input');
 
     function View({ name }: { name: string }) {
         return (
             <div>
-                <div>zzz, { name }!</div>
-                <Input />
+                <div>Hola, { name }!</div>
+                <Input value={name} />
             </div>
         )
     }

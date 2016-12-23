@@ -6,8 +6,10 @@
   "dependencies": {
     "@lilactown/cactus": "^0.1.0",
     "@types/core-js": "^0.9.35",
+    "@types/firebase": "^2.4.30",
     "@types/rebass": "^0.2.16",
     "express": "^4.14.0",
+    "firebase": "^3.6.4",
     "react-dom": "^15.4.1",
     "rebass": "^0.3.3",
     "rxjs": "^5.0.1",

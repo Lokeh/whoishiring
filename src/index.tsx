@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as Cactus from '@lilactown/cactus';
-import { makeHot } from './hmrDriver';
+import { makeHot } from '@lilactown/cactus/utils/hotReloading';
 import { main } from './app';
 
 const drivers = makeHot({

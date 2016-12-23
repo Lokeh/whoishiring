@@ -1,25 +1,44 @@
 import * as Cactus from '@lilactown/cactus';
 import * as React from "react";
 import { compose } from 'ramda';
+import {
+    Container,
+    Toolbar,
+    NavItem,
+    Drawer,
+    Close,
+    Card,
+    Heading,
+    Text,
+} from 'rebass';
 
 export function view(model$: any) {
-    const Input = compose(
-        Cactus.observe<any>('onChange'),
-        Cactus.withProps({ type: "text" }),
-    )('input');
-
-    function View({ name }: { name: string }) {
+    function View() {
         return (
             <div>
-                <div>Hello, { name }!</div>
-                <Input value={name} />
+                <Drawer open={false}>
+                    <Close />
+                </Drawer>
+                <Toolbar>
+                    <NavItem>Who is hiring: December</NavItem>
+                </Toolbar>
+                <Container style={{ paddingTop: "10px" }}>
+                    <Card>
+                        <Heading level={3}>Hello</Heading>
+                        <Text>World</Text>
+                    </Card>
+                    <Card>
+                        <Heading level={3}>Hello</Heading>
+                        <Text>World</Text>
+                    </Card>
+                </Container>
             </div>
         )
     }
 
     return Cactus.connectView(
         View,
-        { input: Cactus.from(Input) },
+        {},
         model$
     );
 }

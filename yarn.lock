@@ -38,6 +38,12 @@
   version "0.14.55"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-0.14.55.tgz#f7f7a6ad0c94780531e95632435b2798c5dad11b"
 
+"@types/rebass@^0.2.16":
+  version "0.2.16"
+  resolved "https://registry.yarnpkg.com/@types/rebass/-/rebass-0.2.16.tgz#8b5fdbee884e72a959fdee800ceb410314e41cd9"
+  dependencies:
+    "@types/react" "*"
+
 "@types/whatwg-fetch@^0.0.33":
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/@types/whatwg-fetch/-/whatwg-fetch-0.0.33.tgz#19c0d2863c8cb2380f21a1c736b79cbf7895bb13"
@@ -312,6 +318,10 @@ chokidar@^1.0.0:
     readdirp "^2.0.0"
   optionalDependencies:
     fsevents "^1.0.0"
+
+classnames@^2.2.3:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
 cliui@^2.1.0:
   version "2.1.0"
@@ -1409,6 +1419,10 @@ rc@~1.1.6:
     minimist "^1.2.0"
     strip-json-comments "~1.0.4"
 
+react-addons-pure-render-mixin@^15.3.1:
+  version "15.4.1"
+  resolved "https://registry.yarnpkg.com/react-addons-pure-render-mixin/-/react-addons-pure-render-mixin-15.4.1.tgz#8a1f48f9fd3f24ed12af63c4d2dc0c7529fa7e02"
+
 react-dom@^15.4.1:
   version "15.4.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.4.1.tgz#d54c913261aaedb17adc20410d029dcc18a1344a"
@@ -1457,6 +1471,14 @@ readdirp@^2.0.0:
     minimatch "^3.0.2"
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
+
+rebass@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/rebass/-/rebass-0.3.3.tgz#bfffddf219107b07be2133173bab9b9887098173"
+  dependencies:
+    classnames "^2.2.3"
+    object-assign "^4.0.1"
+    react-addons-pure-render-mixin "^15.3.1"
 
 regex-cache@^0.4.2:
   version "0.4.3"

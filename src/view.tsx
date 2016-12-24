@@ -7,31 +7,33 @@ import {
     NavItem,
     Drawer,
     Close,
-    Card,
-    Heading,
+    Panel,
+    PanelHeader,
     Text,
 } from 'rebass';
 
 export function view(model$: any) {
-    const Post = Cactus.observe('onClick')(Card);
-    function View() {
+    const Post = Cactus.observe('onClick')(Panel);
+    function View({ title, posts }) {
         return (
             <div>
                 <Drawer open={false}>
                     <Close />
                 </Drawer>
                 <Toolbar>
-                    <NavItem>Who is hiring? (December 2016)</NavItem>
+                    <NavItem>{ title }</NavItem>
                 </Toolbar>
                 <Container style={{ paddingTop: "10px" }}>
-                    <Post>
-                        <Heading level={3}>Hello</Heading>
-                        <Text>World</Text>
-                    </Post>
-                    <Post>
-                        <Heading level={3}>Hello</Heading>
-                        <Text>World</Text>
-                    </Post>
+                    {posts.map((post, i) => {
+                        return (
+                            <Panel key={post.id}>
+                                <PanelHeader>
+                                    Post
+                                </PanelHeader>
+                                <Text><span dangerouslySetInnerHTML={{ __html: post.text }} /></Text>
+                            </Panel>
+                        )
+                    })}
                 </Container>
             </div>
         )
@@ -40,7 +42,6 @@ export function view(model$: any) {
     return Cactus.connectView(
         View,
         {
-            postClick: Cactus.from(Post),
         },
         model$
     );

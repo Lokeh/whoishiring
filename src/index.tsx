@@ -5,11 +5,11 @@ import { makeHot } from '@lilactown/cactus/utils/hotReloading';
 import { makeFirebaseDriver } from './drivers/firebase';
 import { main } from './app';
 
-const drivers = makeHot({
+const drivers = {
     render: Cactus.makeReactDOMDriver(document.getElementById('root')),
     events: Cactus.makeEventDriver(true),
     firebase: makeFirebaseDriver(),
-});
+};
 
 Cactus.run(main, drivers);
 

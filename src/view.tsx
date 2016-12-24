@@ -13,6 +13,7 @@ import {
 } from 'rebass';
 
 export function view(model$: any) {
+    const Post = Cactus.observe('onClick')(Card);
     function View() {
         return (
             <div>
@@ -20,17 +21,17 @@ export function view(model$: any) {
                     <Close />
                 </Drawer>
                 <Toolbar>
-                    <NavItem>Who is hiring: December</NavItem>
+                    <NavItem>Who is hiring? (December 2016)</NavItem>
                 </Toolbar>
                 <Container style={{ paddingTop: "10px" }}>
-                    <Card>
+                    <Post>
                         <Heading level={3}>Hello</Heading>
                         <Text>World</Text>
-                    </Card>
-                    <Card>
+                    </Post>
+                    <Post>
                         <Heading level={3}>Hello</Heading>
                         <Text>World</Text>
-                    </Card>
+                    </Post>
                 </Container>
             </div>
         )
@@ -38,7 +39,9 @@ export function view(model$: any) {
 
     return Cactus.connectView(
         View,
-        {},
+        {
+            postClick: Cactus.from(Post),
+        },
         model$
     );
 }

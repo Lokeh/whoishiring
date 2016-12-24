@@ -20,10 +20,6 @@
   version "0.9.35"
   resolved "https://registry.yarnpkg.com/@types/core-js/-/core-js-0.9.35.tgz#444064e63711cdcc62ea844d27642f6efc2285f2"
 
-"@types/firebase@^2.4.30":
-  version "2.4.30"
-  resolved "https://registry.yarnpkg.com/@types/firebase/-/firebase-2.4.30.tgz#bb40403f91ba41040221e3a04464a20839d963a9"
-
 "@types/lodash@^4.14.43":
   version "4.14.44"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.44.tgz#04585ff0b80d5e434a5f86f15e7964be4f775cba"

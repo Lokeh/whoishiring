@@ -13,6 +13,7 @@ export function main(sources: any) {
 
     const postIntent$ = sources.firebase
         .filter(byTag('post'))
+        .do((v) => console.log(v.value))
         .map(({ value }) => (state) => {
             const newPosts = state.posts.slice();
             newPosts.push(value);
@@ -23,7 +24,6 @@ export function main(sources: any) {
         });
 
     const model$ = Rx.Observable.merge(titleIntent$, postIntent$)
-            .do((v) => console.log('model$', v))
             .scan((state, reducer: any) => reducer(state), { title: '', posts: [] })
             .startWith({ title: 'Hello, world!', posts: [] });
     // const model$ = Rx.Observable.of({})
@@ -32,7 +32,7 @@ export function main(sources: any) {
     const getPosts$ = sources.firebase
         .filter(byTag("latestThread"))
         .flatMap(({ value }) => {
-            return Rx.Observable.from(value.kids)
+            return Rx.Observable.from(value.kids.slice(0,10))
                 .map((id) => ({
                     ref: `v0/item/${id}`,
                     tag: 'post',
@@ -52,7 +52,7 @@ export function main(sources: any) {
     const firebase$ = Rx.Observable.merge(getThreads$, getLatestThread$, getPosts$);
     return {
         render: view$,
-        events: events$,
+        // events: events$,
         firebase: firebase$,
     };
 }

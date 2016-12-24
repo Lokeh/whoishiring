@@ -7,6 +7,28 @@ function byTag(name) {
 }
 
 export function main(sources: any) {
+    const titleIntent$ = sources.firebase
+        .filter(byTag('latestThread'))
+        .map(({ value }) => (state) => ({ ...state, title: value.title }));
+
+    const postIntent$ = sources.firebase
+        .filter(byTag('post'))
+        .map(({ value }) => (state) => {
+            const newPosts = state.posts.slice();
+            newPosts.push(value);
+            return {
+                ...state,
+                posts: newPosts,
+            };
+        });
+
+    const model$ = Rx.Observable.merge(titleIntent$, postIntent$)
+            .do((v) => console.log('model$', v))
+            .scan((state, reducer: any) => reducer(state), { title: '', posts: [] })
+            .startWith({ title: 'Hello, world!', posts: [] });
+    // const model$ = Rx.Observable.of({})
+    const { view$, events$ } = view(model$);
+
     const getPosts$ = sources.firebase
         .filter(byTag("latestThread"))
         .flatMap(({ value }) => {
@@ -27,13 +49,6 @@ export function main(sources: any) {
             ref: 'v0/user/whoishiring/submitted',
             tag: 'threads',
         });
-
-    const model$ = sources.firebase
-            .do((v) => console.log('model$', v))
-            .map(() => ({ loading: false }))
-            .startWith({ loading: true });
-    // const model$ = Rx.Observable.of({})
-    const { view$, events$ } = view(model$);
     const firebase$ = Rx.Observable.merge(getThreads$, getLatestThread$, getPosts$);
     return {
         render: view$,

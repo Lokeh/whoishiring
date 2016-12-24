@@ -13,14 +13,14 @@ import {
 } from 'rebass';
 
 export function view(model$: any) {
-    const Post = Cactus.observe('onClick')(Panel);
+    const MenuToggle = Cactus.observe('onClick')(NavItem);
     function View({ title, posts }) {
         return (
             <div>
                 <Drawer open={false}>
-                    <Close />
                 </Drawer>
                 <Toolbar>
+                    <MenuToggle><i className="fa fa-bars" /></MenuToggle>
                     <NavItem>{ title }</NavItem>
                 </Toolbar>
                 <Container style={{ paddingTop: "10px" }}>
@@ -42,6 +42,7 @@ export function view(model$: any) {
     return Cactus.connectView(
         View,
         {
+            menuButton: Cactus.from(MenuToggle)
         },
         model$
     );

@@ -8,7 +8,7 @@ export function makeFirebaseDriver(): Cactus.Driver {
     });
     const database = app.database();
     return (sinkProxies: Cactus.Sinks, key: string) => {
-        const proxy = sinkProxies[key]//.do((v) => console.log(v));
+        const proxy = sinkProxies[key];
         const source = proxy.flatMap(({ ref, tag }) => 
             Rx.Observable.fromEvent(database.ref(ref), 'value')
                 .map((v: any) => ({
@@ -16,11 +16,7 @@ export function makeFirebaseDriver(): Cactus.Driver {
                     tag,
                 }))).share()
 
-        const subscription = source.subscribe(
-            // (val) => console.log(val)
-        //     // (err) => console.log(err),
-        //     // () => console.log('complete')
-        );
+        const subscription = source.subscribe();
         const dispose = () => subscription.unsubscribe();
         return {
             source,

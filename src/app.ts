@@ -10,6 +10,7 @@ export function main(sources: any) {
     const actions = Cactus.selectable<any>(sources.events);
     const scrollBottom$ = sources.scroll
         .filter(({ scrollY, scrollHeight }) => scrollY === scrollHeight)
+        .do(() => console.log('bottom'));
 
     const threads$: Rx.Observable<any> = sources.firebase
         .filter(byTag('thread'))
@@ -99,17 +100,28 @@ export function main(sources: any) {
         threads$
             .take(1)
             .map(({ value }) => ({
-                threadPosts: value.kids.slice(0, 50),
+                threadPosts: value.kids,
                 start: 0,
             })),
         chooseThread$
             .withLatestFrom(
                 model$,
                 (chosenId, { threads }) => ({
-                    threadPosts: threads.find(({ id }) => id === chosenId)
-                        .kids,
+                    threadPosts: threads.find(({ id }) => id === chosenId).kids,
                     start: 0,
                 })
+            ),
+        scrollBottom$
+            .withLatestFrom(
+                model$,
+                (_, { threads, selectedThread, lastPost }) => {
+                    const threadPosts = threads.find(({ id }) => id === selectedThread).kids;
+                    const start = threadPosts.findIndex((id) => id === lastPost);
+                    return {
+                        threadPosts,
+                        start,
+                    };
+                }
             )
     ).flatMap(({ threadPosts, start }) => {
         return Rx.Observable.from(threadPosts.slice(start, start+50)).map((id) => ({

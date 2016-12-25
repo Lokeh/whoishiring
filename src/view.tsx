@@ -17,6 +17,10 @@ function scrapeTitle(text) {
     return text.match(/.*\|.*?(?=<p>|$)/);
 }
 
+function threadTitle(title) {
+    return title.trim().slice('Ask HN: Who is hiring? ('.length, -1);
+}
+
 export function view(model$: any) {
     const MenuToggle = Cactus.observe('onClick')(NavItem);
     const DismissableDrawer = Cactus.observe<any>('onDismiss')(Drawer);
@@ -27,7 +31,7 @@ export function view(model$: any) {
                 <DismissableDrawer open={showMenu}>
                     {threads.map((thread, i) => 
                         <ThreadItem style={{color: "#fff"}} key={thread.id} id={thread.id}>
-                            {thread.title}
+                            {threadTitle(thread.title)}
                         </ThreadItem>    
                     )}
                 </DismissableDrawer>

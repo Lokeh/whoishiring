@@ -19,18 +19,24 @@ export function main(sources: any) {
         .filter(byTag('thread'))
         
     const newThreadIntent$ = threads$
-        .buffer(threads$.debounceTime(50))//.flatMap(x => x)
+        .buffer(threads$.debounceTime(50))
         .map((valueArray) => (state) => {
             const newThreads = state.threads.slice();
-            newThreads.push(...valueArray);
+            const liveThreads = valueArray
+                .filter(({ value }) => value.title && value.title.includes('Ask HN: Who is hiring?') && !value.dead)
+                .map(({ value }) => value);
+
+            newThreads.push(...liveThreads);
             return {
                 ...state,
                 threads: newThreads,
             };
         });
 
-    const postIntent$ = sources.firebase
-        .filter(byTag('post'))
+    const posts$ = sources.firebase
+        .filter(byTag('post'));
+    const postIntent$ = posts$
+        .buffer(posts$.debounceTime(50)).flatMap(x => x)
         .map(({ value }) => (state) => {
             const newPosts = state.posts.slice();
             newPosts.push(value);

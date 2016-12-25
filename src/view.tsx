@@ -15,10 +15,15 @@ import {
 export function view(model$: any) {
     const MenuToggle = Cactus.observe('onClick')(NavItem);
     const DismissableDrawer = Cactus.observe<any>('onDismiss')(Drawer);
-    function View({ title, posts, showMenu }) {
+    function View({ title, posts, threads, showMenu }) {
         return (
             <div>
                 <DismissableDrawer open={showMenu}>
+                    {threads.map((thread, i) => 
+                        <NavItem style={{color: "#fff"}} key={thread.id}>
+                            {thread.title}
+                        </NavItem>    
+                    )}
                 </DismissableDrawer>
                 <Toolbar>
                     <MenuToggle><i className="fa fa-bars" /></MenuToggle>

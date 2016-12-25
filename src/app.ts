@@ -30,9 +30,8 @@ export function main(sources: any) {
         .filter(byTag('post'))
         .filter(({ value }) => !!value);
     const postIntent$ = posts$
-        .take(100)
-        // .buffer(posts$.debounceTime(50))
-        .bufferTime(50)
+        .buffer(posts$.debounceTime(50))
+        // .bufferTime(50)
         .map((values) => (state) => {
             const newPosts = state.posts.slice();
             newPosts.push(...values.map(({ value }) => value));
@@ -51,18 +50,33 @@ export function main(sources: any) {
             ...state,
             showMenu: !showMenu,
         }));
+    
+    const chooseThread$ = actions.select('threadItem')
+        .map(({ props: { id } }) => id);
 
-    const titleIntent$ = threads$
-        .take(1)
-        .map(({ value: { title } }) => (state) => ({
-            ...state,
-            title,
-        }));
+    const threadSelectIntent$ = Rx.Observable.merge(
+        threads$
+            .take(1)
+            .map(({ value: { title, id } }) => (state) => ({
+                ...state,
+                selectedThread: id,
+                title,
+            })),
+        chooseThread$
+            .map((chosenId) => ({ threads, ...state }) => ({
+                ...state,
+                threads,
+                title: threads.find(({ id }) => id === chosenId).title,
+                selectedThread: chosenId,
+                showMenu: false,
+                posts: [],
+            })),
+    );
 
     const model$ = 
-        Rx.Observable.merge(menuToggleIntent$, newThreadIntent$, postIntent$, titleIntent$)
+        Rx.Observable.merge(menuToggleIntent$, newThreadIntent$, postIntent$, threadSelectIntent$)
             .scan((state, reducer: any) => reducer(state), {
-                title: 'Hello, world!',
+                title: 'Loading...',
                 threads: [],
                 selectedThread: 0,
                 posts: [],
@@ -78,15 +92,21 @@ export function main(sources: any) {
             .do((v) => console.log(v));
     const { view$, events$ } = view(model$);
 
-    const getPosts$ = threads$
-        .take(1)
-        .flatMap(({ value }) => {
-            return Rx.Observable.from(value.kids.slice())
-                .map((id) => ({
-                    ref: `v0/item/${id}`,
-                    tag: 'post',
-                }));
-        });
+    const getPosts$ = Rx.Observable.merge(
+        threads$
+            .take(1)
+            .map(({ value }) => value),
+        chooseThread$
+            .withLatestFrom(
+                model$,
+                (chosenId, { threads }) => threads.find(({ id }) => id === chosenId)
+            )
+    ).flatMap((thread) => {
+        return Rx.Observable.from(thread.kids.slice(0, 50)).map((id) => ({
+            ref: `v0/item/${id}`,
+            tag: 'post',
+        }))
+    });
 
     const getThreads = sources.firebase
         .filter(byTag("threadIds"))

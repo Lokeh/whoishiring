@@ -20,7 +20,7 @@ function scrapeTitle(text) {
 export function view(model$: any) {
     const MenuToggle = Cactus.observe('onClick')(NavItem);
     const DismissableDrawer = Cactus.observe<any>('onDismiss')(Drawer);
-    const ThreadItem = Cactus.observe<any>('oncClick')(NavItem);
+    const ThreadItem = Cactus.observe<any>('onClick')(NavItem);
     function View({ title, posts, threads, showMenu }) {
         return (
             <div>
@@ -38,7 +38,6 @@ export function view(model$: any) {
                 <Container style={{ paddingTop: "10px" }}>
                     {posts.map((post, i) => {
                         const title = scrapeTitle(post.text);
-                        console.log(title);
                         return (
                             <Panel key={i}>
                                 <PanelHeader>

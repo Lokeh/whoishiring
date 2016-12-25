@@ -12,6 +12,11 @@ import {
     Text,
 } from 'rebass';
 
+function scrapeTitle(text) {
+    // console.log(text);
+    return text.match(/.*\|.*?(?=<p>|$)/);
+}
+
 export function view(model$: any) {
     const MenuToggle = Cactus.observe('onClick')(NavItem);
     const DismissableDrawer = Cactus.observe<any>('onDismiss')(Drawer);
@@ -31,10 +36,12 @@ export function view(model$: any) {
                 </Toolbar>
                 <Container style={{ paddingTop: "10px" }}>
                     {posts.map((post, i) => {
+                        const title = scrapeTitle(post.text);
+                        console.log(title);
                         return (
-                            <Panel key={post.id}>
+                            <Panel key={i}>
                                 <PanelHeader>
-                                    Post
+                                    {title ? title[0] : 'Post'}
                                 </PanelHeader>
                                 <Text><span dangerouslySetInnerHTML={{ __html: post.text }} /></Text>
                             </Panel>

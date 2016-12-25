@@ -3,12 +3,14 @@ import * as ReactDOM from "react-dom";
 import * as Cactus from '@lilactown/cactus';
 import { makeHot } from '@lilactown/cactus/utils/hotReloading';
 import { makeFirebaseDriver } from './drivers/firebase';
+import { makeScrollDriver } from './drivers/scroll';
 import { main } from './app';
 
 const drivers = {
     render: Cactus.makeReactDOMDriver(document.getElementById('root')),
     events: Cactus.makeEventDriver(true),
     firebase: makeFirebaseDriver(),
+    scroll: makeScrollDriver(),
 };
 
 Cactus.run(main, drivers);

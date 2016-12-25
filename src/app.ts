@@ -8,16 +8,9 @@ function byTag(name) {
 
 export function main(sources: any) {
     const actions = Cactus.selectable<any>(sources.events);
-    const titleIntent$ = sources.firebase
-        .filter(byTag('latestThread'))
-        .map(({ value }) => (state) => ({
-            ...state,
-            title: value.title,
-        }));
 
     const threads$ = sources.firebase
         .filter(byTag('thread'))
-        
     const newThreadIntent$ = threads$
         .buffer(threads$.debounceTime(50))
         .map((valueArray) => (state) => {
@@ -47,8 +40,8 @@ export function main(sources: any) {
         });
 
     const menuToggleIntent$ = Rx.Observable.merge(
-            actions.select('menuToggle'),
-            actions.select('drawer'),
+        actions.select('menuToggle'),
+        actions.select('drawer'),
     )
         .map(() => ({ showMenu, ...state }) => ({
             ...state,

@@ -41,7 +41,7 @@ export function view(model$: any) {
                         return (
                             <Panel key={i}>
                                 <PanelHeader>
-                                    {title ? title[0] : 'Post'}
+                                    <span dangerouslySetInnerHTML={{ __html: title ? title[0] : 'Post'}} />
                                 </PanelHeader>
                                 <Text><span dangerouslySetInnerHTML={{ __html: post.text }} /></Text>
                             </Panel>

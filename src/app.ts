@@ -7,13 +7,13 @@ function byTag(name) {
 }
 
 export function main(sources: any) {
+    const actions = Cactus.selectable<any>(sources.events);
     const titleIntent$ = sources.firebase
         .filter(byTag('latestThread'))
         .map(({ value }) => (state) => ({ ...state, title: value.title }));
 
     const postIntent$ = sources.firebase
         .filter(byTag('post'))
-        .do((v) => console.log(v.value))
         .map(({ value }) => (state) => {
             const newPosts = state.posts.slice();
             newPosts.push(value);
@@ -23,9 +23,27 @@ export function main(sources: any) {
             };
         });
 
-    const model$ = Rx.Observable.merge(titleIntent$, postIntent$)
-            .scan((state, reducer: any) => reducer(state), { title: '', posts: [] })
-            .startWith({ title: 'Hello, world!', posts: [] });
+    const menuToggleIntent$ = Rx.Observable.merge(
+            actions.select('menuToggle'),
+            actions.select('drawer'),
+    )
+        .do(() => console.log('toggled'))
+        .map(() => ({ showMenu, ...state }) => ({
+            ...state,
+            showMenu: !showMenu,
+        }));
+
+    const model$ = Rx.Observable.merge(titleIntent$, postIntent$, menuToggleIntent$)
+            .scan((state, reducer: any) => reducer(state), {
+                title: '',
+                posts: [],
+                showMenu: false,
+            })
+            .startWith({
+                title: 'Hello, world!',
+                posts: [],
+                showMenu: false,
+            });
     // const model$ = Rx.Observable.of({})
     const { view$, events$ } = view(model$);
 
@@ -52,7 +70,7 @@ export function main(sources: any) {
     const firebase$ = Rx.Observable.merge(getThreads$, getLatestThread$, getPosts$);
     return {
         render: view$,
-        // events: events$,
+        events: events$,
         firebase: firebase$,
     };
 }

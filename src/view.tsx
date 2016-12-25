@@ -14,11 +14,12 @@ import {
 
 export function view(model$: any) {
     const MenuToggle = Cactus.observe('onClick')(NavItem);
-    function View({ title, posts }) {
+    const DismissableDrawer = Cactus.observe<any>('onDismiss')(Drawer);
+    function View({ title, posts, showMenu }) {
         return (
             <div>
-                <Drawer open={false}>
-                </Drawer>
+                <DismissableDrawer open={showMenu}>
+                </DismissableDrawer>
                 <Toolbar>
                     <MenuToggle><i className="fa fa-bars" /></MenuToggle>
                     <NavItem>{ title }</NavItem>
@@ -42,7 +43,8 @@ export function view(model$: any) {
     return Cactus.connectView(
         View,
         {
-            menuButton: Cactus.from(MenuToggle)
+            menuToggle: Cactus.from(MenuToggle),
+            drawer: Cactus.from(DismissableDrawer),
         },
         model$
     );

@@ -11,12 +11,12 @@ export function main(sources: any) {
 
     const threads$ = sources.firebase
         .filter(byTag('thread'))
+        .filter(({ value }) => value.title && value.title.includes('Ask HN: Who is hiring?') && !value.dead)
     const newThreadIntent$ = threads$
         .buffer(threads$.debounceTime(50))
         .map((valueArray) => (state) => {
             const newThreads = state.threads.slice();
             const liveThreads = valueArray
-                .filter(({ value }) => value.title && value.title.includes('Ask HN: Who is hiring?') && !value.dead)
                 .map(({ value }) => value);
 
             newThreads.push(...liveThreads);
@@ -29,10 +29,10 @@ export function main(sources: any) {
     const posts$ = sources.firebase
         .filter(byTag('post'));
     const postIntent$ = posts$
-        .buffer(posts$.debounceTime(50)).flatMap(x => x)
-        .map(({ value }) => (state) => {
+        .buffer(posts$.debounceTime(50))
+        .map((values) => (state) => {
             const newPosts = state.posts.slice();
-            newPosts.push(value);
+            newPosts.push(...values.map(({ value }) => value));
             return {
                 ...state,
                 posts: newPosts,
@@ -48,8 +48,15 @@ export function main(sources: any) {
             showMenu: !showMenu,
         }));
 
+    const titleIntent$ = threads$
+        .take(1)
+        .map(({ value: { title } }) => (state) => ({
+            ...state,
+            title,
+        }));
+
     const model$ = 
-        Rx.Observable.merge(menuToggleIntent$, newThreadIntent$)//, titleIntent$, postIntent$)
+        Rx.Observable.merge(menuToggleIntent$, newThreadIntent$, postIntent$, titleIntent$)
             .scan((state, reducer: any) => reducer(state), {
                 title: 'Hello, world!',
                 threads: [],
@@ -67,8 +74,8 @@ export function main(sources: any) {
             .do((v) => console.log(v));
     const { view$, events$ } = view(model$);
 
-    const getPosts$ = sources.firebase
-        .filter(byTag("latestThread"))
+    const getPosts$ = threads$
+        .take(1)
         .flatMap(({ value }) => {
             return Rx.Observable.from(value.kids.slice(0,10))
                 .map((id) => ({
@@ -77,7 +84,6 @@ export function main(sources: any) {
                 }));
         });
 
-    // TO DO: Get all thread titles
     const getThreads = sources.firebase
         .filter(byTag("threadIds"))
         .flatMap(({ value }) =>

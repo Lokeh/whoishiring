@@ -37,7 +37,7 @@ export function view(model$: any) {
                 </Toolbar>
                 <Container style={{ paddingTop: "10px" }}>
                     {posts.map((post, i) => {
-                        const title = scrapeTitle(post.text);
+                        const title = post.text ? scrapeTitle(post.text) : null;
                         return (
                             <Panel key={i}>
                                 <PanelHeader>

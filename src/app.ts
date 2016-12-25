@@ -116,7 +116,7 @@ export function main(sources: any) {
                 model$,
                 (_, { threads, selectedThread, lastPost }) => {
                     const threadPosts = threads.find(({ id }) => id === selectedThread).kids;
-                    const start = threadPosts.findIndex((id) => id === lastPost);
+                    const start = threadPosts.findIndex((id) => id === lastPost)+1;
                     return {
                         threadPosts,
                         start,

@@ -54,6 +54,7 @@ export function view(model$: any) {
                             </Panel>
                         )
                     })}
+                    <Text style={{ textAlign: "center" }}>Loading...</Text>
                 </Container>
             </div>
         )

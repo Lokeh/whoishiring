@@ -31,11 +31,9 @@ export function main(sources: any) {
         .filter(({ value }) => !!value);
     const postIntent$ = posts$
         .buffer(posts$.debounceTime(50))
-        // .bufferTime(50)
         .map((values) => (state) => {
             const newPosts = state.posts.slice();
             newPosts.push(...values.map(({ value }) => value));
-            // newPosts.push(values.value);
             return {
                 ...state,
                 posts: newPosts,

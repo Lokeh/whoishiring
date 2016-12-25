@@ -6,6 +6,7 @@ import {
     Toolbar,
     NavItem,
     Drawer,
+    Fixed,
     Close,
     Panel,
     PanelHeader,
@@ -35,11 +36,13 @@ export function view(model$: any) {
                         </ThreadItem>    
                     )}
                 </DismissableDrawer>
-                <Toolbar>
-                    <MenuToggle><i className="fa fa-bars" /></MenuToggle>
-                    <NavItem>{ title }</NavItem>
-                </Toolbar>
-                <Container style={{ paddingTop: "10px" }}>
+                <Fixed top right left>
+                    <Toolbar>
+                        <MenuToggle><i className="fa fa-bars" /></MenuToggle>
+                        <NavItem>{ title }</NavItem>
+                    </Toolbar>
+                </Fixed>
+                <Container style={{ paddingTop: "65px" }}>
                     {posts.map((post, i) => {
                         const title = post.text ? scrapeTitle(post.text) : null;
                         return (

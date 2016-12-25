@@ -86,7 +86,7 @@ export function main(sources: any) {
                 showMenu: false,
             })
             .startWith({
-                title: '',
+                title: 'Loading...',
                 threads: [],
                 selectedThread: 0,
                 posts: [],

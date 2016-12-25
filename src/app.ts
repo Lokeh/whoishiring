@@ -27,12 +27,16 @@ export function main(sources: any) {
         });
 
     const posts$ = sources.firebase
-        .filter(byTag('post'));
+        .filter(byTag('post'))
+        .filter(({ value }) => !!value);
     const postIntent$ = posts$
-        .buffer(posts$.debounceTime(50))
+        .take(100)
+        // .buffer(posts$.debounceTime(50))
+        .bufferTime(50)
         .map((values) => (state) => {
             const newPosts = state.posts.slice();
             newPosts.push(...values.map(({ value }) => value));
+            // newPosts.push(values.value);
             return {
                 ...state,
                 posts: newPosts,
@@ -77,7 +81,7 @@ export function main(sources: any) {
     const getPosts$ = threads$
         .take(1)
         .flatMap(({ value }) => {
-            return Rx.Observable.from(value.kids.slice(0,10))
+            return Rx.Observable.from(value.kids.slice())
                 .map((id) => ({
                     ref: `v0/item/${id}`,
                     tag: 'post',

@@ -20,14 +20,15 @@ function scrapeTitle(text) {
 export function view(model$: any) {
     const MenuToggle = Cactus.observe('onClick')(NavItem);
     const DismissableDrawer = Cactus.observe<any>('onDismiss')(Drawer);
+    const ThreadItem = Cactus.observe<any>('oncClick')(NavItem);
     function View({ title, posts, threads, showMenu }) {
         return (
             <div>
                 <DismissableDrawer open={showMenu}>
                     {threads.map((thread, i) => 
-                        <NavItem style={{color: "#fff"}} key={thread.id}>
+                        <ThreadItem style={{color: "#fff"}} key={thread.id} id={thread.id}>
                             {thread.title}
-                        </NavItem>    
+                        </ThreadItem>    
                     )}
                 </DismissableDrawer>
                 <Toolbar>
@@ -57,6 +58,7 @@ export function view(model$: any) {
         {
             menuToggle: Cactus.from(MenuToggle),
             drawer: Cactus.from(DismissableDrawer),
+            threadItem: Cactus.from(ThreadItem),
         },
         model$
     );

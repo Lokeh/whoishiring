@@ -8,8 +8,10 @@ function byTag(name) {
 
 export function main(sources: any) {
     const actions = Cactus.selectable<any>(sources.events);
+    const scrollBottom$ = sources.scroll
+        .filter(({ scrollY, scrollHeight }) => scrollY === scrollHeight)
 
-    const threads$ = sources.firebase
+    const threads$: Rx.Observable<any> = sources.firebase
         .filter(byTag('thread'))
         .filter(({ value }) => value.title && value.title.includes('Ask HN: Who is hiring?') && !value.dead)
     const newThreadIntent$ = threads$
@@ -37,6 +39,7 @@ export function main(sources: any) {
             return {
                 ...state,
                 posts: newPosts,
+                lastPost: newPosts[newPosts.length-1].id,
             };
         });
 
@@ -78,6 +81,7 @@ export function main(sources: any) {
                 threads: [],
                 selectedThread: 0,
                 posts: [],
+                lastPost: 0,
                 showMenu: false,
             })
             .startWith({
@@ -85,6 +89,7 @@ export function main(sources: any) {
                 threads: [],
                 selectedThread: 0,
                 posts: [],
+                lastPost: 0,
                 showMenu: false,
             })
             .do((v) => console.log(v));
@@ -93,14 +98,21 @@ export function main(sources: any) {
     const getPosts$ = Rx.Observable.merge(
         threads$
             .take(1)
-            .map(({ value }) => value),
+            .map(({ value }) => ({
+                threadPosts: value.kids.slice(0, 50),
+                start: 0,
+            })),
         chooseThread$
             .withLatestFrom(
                 model$,
-                (chosenId, { threads }) => threads.find(({ id }) => id === chosenId)
+                (chosenId, { threads }) => ({
+                    threadPosts: threads.find(({ id }) => id === chosenId)
+                        .kids,
+                    start: 0,
+                })
             )
-    ).flatMap((thread) => {
-        return Rx.Observable.from(thread.kids.slice(0, 50)).map((id) => ({
+    ).flatMap(({ threadPosts, start }) => {
+        return Rx.Observable.from(threadPosts.slice(start, start+50)).map((id) => ({
             ref: `v0/item/${id}`,
             tag: 'post',
         }))

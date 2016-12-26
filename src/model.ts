@@ -1,5 +1,5 @@
 import * as Rx from 'rxjs/Rx';
-
+import { Intents } from './intents';
 export type Model = {
     title: string,
     threads: any[],
@@ -9,7 +9,7 @@ export type Model = {
     showMenu: boolean,
 };
 
-export function model(intents$): Rx.Observable<Model> {
+export function model(intents$: Intents): Rx.Observable<Model> {
     return intents$
         .scan((state, reducer: any) => reducer(state), {
             title: 'Loading...',

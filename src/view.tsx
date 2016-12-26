@@ -13,7 +13,7 @@ import {
     Text,
 } from 'rebass';
 
-function scrapeTitle(text) {
+function scrapePostTitle(text) {
     // console.log(text);
     return text.match(/.*\|.*?(?=<p>|$)/);
 }
@@ -39,12 +39,12 @@ export function view(model$: any) {
                 <Fixed top right left>
                     <Toolbar>
                         <MenuToggle><i className="fa fa-bars" /></MenuToggle>
-                        <NavItem>{ title }</NavItem>
+                        <NavItem>{ threadTitle(title) }</NavItem>
                     </Toolbar>
                 </Fixed>
                 <Container style={{ paddingTop: "65px" }}>
                     {posts.map((post, i) => {
-                        const title = post.text ? scrapeTitle(post.text) : null;
+                        const title = post.text ? scrapePostTitle(post.text) : null;
                         return (
                             <Panel key={i}>
                                 <PanelHeader>

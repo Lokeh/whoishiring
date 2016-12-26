@@ -45,7 +45,7 @@ export function firebaseRequests(sources, model$: Rx.Observable<Model>) {
             ),
         scrollBottom$
             .withLatestFrom(
-                model$,
+                model$.filter((state) => !!state.threads.length && !!state.posts.length),
                 (_, { threads, selectedThread, lastPost }) => {
                     const threadPosts = threads.find(({ id }) => id === selectedThread).kids;
                     const start = threadPosts.findIndex((id) => id === lastPost)+1;
@@ -72,10 +72,13 @@ export function firebaseRequests(sources, model$: Rx.Observable<Model>) {
                 }))
         );
 
-    const getThreadIds$ = Rx.Observable.of({
-            ref: 'v0/user/whoishiring/submitted',
-            tag: 'threadIds',
-        });
+    const getThreadIds$ = model$
+        .filter((state) => !state.threads.length)
+        .take(1)
+        .map(() => ({
+                ref: 'v0/user/whoishiring/submitted',
+                tag: 'threadIds',
+        }));
 
     return Rx.Observable.merge(getThreadIds$, getThreads, getPosts$);
 }

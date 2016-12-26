@@ -20,7 +20,14 @@ const drivers = {
     events: Cactus.makeEventDriver(true),
     firebase: makeFirebaseDriver(),
     scroll: makeScrollDriver(),
-    reload: makeStateReloadDriver(),
+    reload: makeStateReloadDriver({
+        title: 'Loading...',
+        threads: [],
+        selectedThread: 0,
+        posts: [],
+        lastPost: 0,
+        showMenu: false,
+    }),
 };
 
 let dispose = Cactus.run(main, drivers);

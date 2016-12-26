@@ -16,10 +16,7 @@ export interface Sources extends Cactus.RenderSource, Cactus.EventSource, Fireba
 };
 
 export function main(sources: Sources) {
-    const model$ = Rx.Observable.merge(
-        model(intent(sources)),
-        sources.reload.take(1),
-    );
+    const model$ = model(intent(sources), sources.reload)
     const { view$, events$ } = view(model$);
     const firebase$ = firebaseRequests(sources, model$);
     return {

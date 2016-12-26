@@ -9,23 +9,19 @@ export type Model = {
     showMenu: boolean,
 };
 
-export function model(intents$: Intents): Rx.Observable<Model> {
-    return intents$
-        .scan((state, reducer: any) => reducer(state), {
-            title: 'Loading...',
-            threads: [],
-            selectedThread: 0,
-            posts: [],
-            lastPost: 0,
-            showMenu: false,
-        })
-        .startWith({
-            title: 'Loading...',
-            threads: [],
-            selectedThread: 0,
-            posts: [],
-            lastPost: 0,
-            showMenu: false,
-        })
-        .do((v) => console.log(v));
+export function model(intents$: Intents, reload$): Rx.Observable<Model> {
+    return reload$.take(1).flatMap((initialState) => {
+        return intents$
+            .scan((state, reducer: any) => reducer(state), initialState)
+            .startWith(initialState)
+    })
+        // .startWith({
+        //     title: 'Loading...',
+        //     threads: [],
+        //     selectedThread: 0,
+        //     posts: [],
+        //     lastPost: 0,
+        //     showMenu: false,
+        // })
+        // .do((v) => console.log(v));
 }

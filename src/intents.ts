@@ -1,10 +1,14 @@
 import * as Rx from 'rxjs/Rx';
 import * as Cactus from '@lilactown/cactus';
+import { Sources } from './app';
 function byTag(name) {
-    return ({ tag }) => tag === name;
+    return ({ tag, value }) => tag === name;
 }
 
-export function intent(sources) {
+export type Reducer = (state: any) => any;
+export type Intents = Rx.Observable<Reducer>;
+
+export function intent(sources: Sources): Intents {
         const actions = Cactus.selectable<any>(sources.events);
     const scrollBottom$ = sources.scroll
         .filter(({ scrollY, scrollHeight }) => scrollY === scrollHeight)

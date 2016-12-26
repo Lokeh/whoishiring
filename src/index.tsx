@@ -1,11 +1,16 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as Cactus from '@lilactown/cactus';
-import { makeFirebaseDriver } from './drivers/firebase';
+import { makeFirebaseDriver, FirebaseDriverDefinition } from './drivers/firebase';
 import { makeScrollDriver } from './drivers/scroll';
 import { main } from './app';
 
-const drivers = {
+type Drivers =
+    Cactus.RenderDriverDefinition &
+    Cactus.EventDriverDefinition &
+    FirebaseDriverDefinition
+
+const drivers: Drivers = {
     render: Cactus.makeReactDOMDriver(document.getElementById('root')),
     events: Cactus.makeEventDriver(true),
     firebase: makeFirebaseDriver(),
@@ -13,14 +18,3 @@ const drivers = {
 };
 
 Cactus.run(main, drivers);
-
-// Hot Module Replacement API
-if (module.hot) {
-    module.hot.accept("./app", () => {
-        const nextMain = require("./app").main;
-        Cactus.run(
-            nextMain,
-            drivers
-        );
-    });
-}
